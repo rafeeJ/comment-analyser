@@ -1,5 +1,5 @@
 const functions = require("firebase-functions");
-
+const { LanguageServiceClient } = require('@google-cloud/language');
 // // Create and deploy your first functions
 // // https://firebase.google.com/docs/functions/get-started
 //
@@ -7,3 +7,26 @@ const functions = require("firebase-functions");
 //   functions.logger.info("Hello logs!", {structuredData: true});
 //   response.send("Hello from Firebase!");
 // });
+
+exports.analyseComment = functions.firestore.document('comments/{commentId}').onCreate(async (snap, context) => {
+    const { comment } = snap.data();
+
+    const client = new LanguageServiceClient();
+    const request = {
+        document: {
+            content: comment,
+            type: 'PLAIN_TEXT'
+        },
+        encodingType: 'UTF8'
+    };
+
+    client.analyzeSentiment(request).then(results => {
+        const { documentSentiment } = results[0];
+        const { score, magnitude } = documentSentiment;
+        return snap.ref.set({ score, magnitude }, { merge: true });
+    }
+    ).catch(err => {
+        console.error('ERROR:', err);
+    }
+    );
+});

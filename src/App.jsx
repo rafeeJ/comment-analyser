@@ -1,32 +1,46 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
 import './App.css'
+import { useCollection } from 'react-firebase-hooks/firestore'
+import { db } from '../config/firebaseConfig'
+import { addDoc, collection, doc } from 'firebase/firestore'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [comment, setComment] = useState(0)
+  const [comments, loading, error] = useCollection(
+    collection(
+      db, 'comments')
+  )
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    // add comment to firestore using firebase v9
+    addDoc(collection(db, 'comments'), { comment: comment })
+
+  }
+
+  const handleInput = (e) => {
+    setComment(e.target.value)
+  }
 
   return (
     <div className="App">
+      <form>
+        <input type="text" onChange={handleInput} />
+        <button type="submit" onClick={handleSubmit}>Submit</button>
+      </form>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        {loading && <span>Collection: Loading...</span>}
+        {comments && (
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {comments.docs.map((doc, idx) => (
+              <div key={idx} style={{ margin: 10, backgroundColor: 'olivedrab', borderRadius: 5, padding: 2 }}>
+                {doc.data().comment}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+
     </div>
   )
 }
