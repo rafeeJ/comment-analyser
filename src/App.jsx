@@ -7,7 +7,7 @@ import CommentBox from './components/CommentBox'
 import { Button, Card, CircularProgress, Input } from '@mui/material'
 
 function App() {
-  const [comment, setComment] = useState(0)
+  const [comment, setComment] = useState("")
 
   const [comments, loading, error] = useCollection(
     query(
