@@ -8,22 +8,17 @@ import { Button, Card, CircularProgress, Input } from '@mui/material'
 
 function App() {
   const [comment, setComment] = useState("")
-
-  const [comments, loading, error] = useCollection(
-    query(
-    collection(db, 'comments'), 
-    orderBy('timestamp', 'desc')
-  ));
+  
+  // TODO: Read Comments from Firestore
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    addDoc(collection(db, 'comments'), { comment, timestamp: new Date().getTime() })
+    // TODO: create comment
     setComment('')
   }
 
   const handleDelete = (id) => {
-    console.log('delete')
-    deleteDoc(doc(db, `comments/${id}`))
+    // TODO: delete comment
   }
 
   const handleInput = (e) => {
@@ -31,9 +26,9 @@ function App() {
   }
 
   const handleLike = (event, id) => {
-    console.log(event.target.checked, id)
-    updateDoc(doc(db, `comments/${id}`), { liked: event.target.checked })
+    // TODO: update comment
   }
+  
 
   return (
     <div className="App">
@@ -44,7 +39,7 @@ function App() {
           <Button variant="contained" onClick={handleSubmit}>Submit</Button>
         </form>
       </Card>
-      <div>
+      {/* <div>
         {loading && <CircularProgress />}
         {comments && (
           <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -64,7 +59,7 @@ function App() {
             }
           </div>
         )}
-      </div>
+      </div> */}
 
     </div>
   )
