@@ -11,9 +11,9 @@ function App() {
 
   const [comments, loading, error] = useCollection(
     query(
-    collection(
-      db, 'comments'), orderBy('timestamp', 'desc'))
-  )
+    collection(db, 'comments'), 
+    orderBy('timestamp', 'desc')
+  ));
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -34,9 +34,6 @@ function App() {
     console.log(event.target.checked, id)
     updateDoc(doc(db, `comments/${id}`), { liked: event.target.checked })
   }
-
-
-
 
   return (
     <div className="App">
