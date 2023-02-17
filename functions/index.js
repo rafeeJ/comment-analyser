@@ -19,9 +19,7 @@ exports.analyseComment = functions.region("europe-west2").
         const {documentSentiment} = results[0];
         const {score, magnitude} = documentSentiment;
         return snap.ref.set({score, magnitude}, {merge: true});
-      }
-      ).catch((err) => {
+      }).catch((err) => {
         console.error("ERROR:", err);
-      }
-      );
+      });
     });

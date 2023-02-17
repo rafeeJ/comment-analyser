@@ -9,7 +9,7 @@ import { Button, Card, CircularProgress, Input } from '@mui/material'
 function App() {
   const [comment, setComment] = useState("")
   
-  // TODO: Read Comments from Firestore
+  // TODO: Read Comments from Firestore, and store them in the comments variable
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -29,7 +29,6 @@ function App() {
     // TODO: update comment
   }
   
-
   return (
     <div className="App">
       <Card style={{ padding: 5, borderRadius: 5, margin: 5 }}>
@@ -39,7 +38,7 @@ function App() {
           <Button variant="contained" onClick={handleSubmit}>Submit</Button>
         </form>
       </Card>
-      {/* <div>
+      <div>
         {loading && <CircularProgress />}
         {comments && (
           <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -59,8 +58,7 @@ function App() {
             }
           </div>
         )}
-      </div> */}
-
+      </div>
     </div>
   )
 }
